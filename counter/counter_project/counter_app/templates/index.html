@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+    {%load static%}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Counter</h1>
+        <h5>{{request.session.number}} times</h5>
+        <div class="btns">
+            <a href="{% url 'destroy' %}" class="reset">reset</a>
+            <a href="{% url 'add' %}" class="add">add</a>
+        </div>
+        <form action="{% url 'increment' %}" method="post">
+            {% csrf_token %}
+            <input class="number-input" type="number" name="number" id="number" placeholder="Enter number of increment"
+                required>
+            <input class="send" type="submit" value="send">
+        </form>
+    </div>
+</body>
+
+</html>

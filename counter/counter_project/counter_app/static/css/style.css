@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    height: 100vh;
+}
+
+.container h5{
+    padding: 10px 40px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btns{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.reset{
+    padding: 10px 20px;
+    background-color: brown;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 2px solid brown;
+    transition: all 0.2s ease;
+}
+
+.reset:hover{
+    background-color: transparent;
+    color: black;
+}
+
+.add{
+    padding: 10px 20px;
+    background-color: green;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 2px solid green;
+    transition: all 0.2s ease;
+}
+
+.add:hover{
+    background-color: transparent;
+    color: black;
+}
+.send{
+    padding: 10px 20px;
+    background-color: blueviolet;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 2px solid blueviolet;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.send:hover{
+    background-color: transparent;
+    color: black;
+}
+
+.number-input{
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid blueviolet;
+}
