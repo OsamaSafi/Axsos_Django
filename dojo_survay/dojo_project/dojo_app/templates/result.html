@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Submiting Info</h1>
+        <h4>name</h4>
+        <p>{{request.session.form_data.name}}</p>
+        <h4>land</h4>
+        <p>{{request.session.form_data.lang}}</p>
+        <h4>location</h4>
+        <p>{{request.session.form_data.location}}</p>
+        <h4>gender</h4>
+        <p>{{request.session.form_data.gender}}</p>
+        <h4>speak</h4>
+        {% for speak in request.session.form_data.speaks %}
+        <p>{{speak}} </p>
+        {% endfor %}
+        <h4>comment</h4>
+        <p>{{request.session.form_data.comment}}</p>
+    </div>
+</body>
+
+</html>

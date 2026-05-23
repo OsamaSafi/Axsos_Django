@@ -1,0 +1,48 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 40%;
+    margin: 100px auto;
+    border: 2px solid #000;
+    padding: 18px;
+    background-color: antiquewhite;
+}
+
+.container form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.container form input{
+    padding: 5px;
+}
+
+.container form select{
+    padding: 10px;
+    font-size: 15px;
+}
+
+.container form textarea{
+    padding: 10px;
+}
+
+.btn{
+    background-color: blueviolet;
+    color: #fff;
+    border: none;
+}
+
+p{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+}
+h4{
+    margin-bottom: 5px;
+}
