@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="gold_num">
+            <h2>Your Gold : </h2>
+            <span>{{gold_money}}</span>
+        </div>
+        <div class="boxes">
+            <div class="box">
+                <form action="{% url 'process' type='farm' %}" method="post">
+                    {%csrf_token%}
+                    <h3>Farm</h3>
+                    <p>(earns 10-20 gold)</p>
+                    <!-- <input type="hidden" name="type" value="farm"> -->
+                    <input class="btn" type="submit" value="Find Gold!">
+                </form>
+            </div>
+            <div class="box">
+                <form action="{% url 'process' type='cave' %}" method="post">
+                    {%csrf_token%}
+                    <h3>Cave</h3>
+                    <p>(earns 10-20 gold)</p>
+                    <!-- <input type="hidden" name="type" value="cave"> -->
+                    <input class="btn" type="submit" value="Find Gold!">
+                </form>
+            </div>
+            <div class="box">
+                <form action="{% url 'process' type='house' %}" method="post">
+                    {%csrf_token%}
+                    <h3>House</h3>
+                    <p>(earns 10-20 gold)</p>
+                    <!-- <input type="hidden" name="type" value="house"> -->
+                    <input class="btn" type="submit" value="Find Gold!">
+                </form>
+            </div>
+            <div class="box">
+                <form action="{% url 'process' type='quest' %}" method="post">
+                    {%csrf_token%}
+                    <h3>Quest</h3>
+                    <p>(earns/takes 0-50 gold)</p>
+                    <!-- <input type="hidden" name="type" value="quest"> -->
+                    <input class="btn" type="submit" value="Find Gold!">
+                </form>
+            </div>
+
+        </div>
+
+        <div class="activity">
+            <h2>Activities : </h2>
+            <div class="activity-content">
+                {% for activity in activities %}
+                <p style="color: {{ activity.color }}; margin: 5px 0;">
+                    {{ activity.message }}
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
