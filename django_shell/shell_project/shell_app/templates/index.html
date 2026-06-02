@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="user-table">
+            <h1>All User</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>email</th>
+                        <th>age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for user in users%}
+                    <tr>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.age}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+        <div class="user-form">
+            <h1>Add User</h1>
+            <form action="/create" method="post">
+                {%csrf_token%}
+                <div class="form">
+                    <div class="box">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name">
+                        <label for="email">email</label>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="box">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name">
+                        <label for="age">age</label>
+                        <input type="number" name="age">
+                    </div>
+                </div>
+                <br>
+                <input type="submit" class="btn" value="create">
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
