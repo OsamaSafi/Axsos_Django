@@ -1,0 +1,76 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.container{
+    width: 60%;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.container .dojo-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+}
+
+.container .dojo-form .box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.container h1{
+    margin-bottom: 20px;
+}
+
+.dojo-all .dojo-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.btn-d{
+    padding: 5px 15px;
+    background-color: brown;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-a{
+    padding: 5px 15px;
+    background-color: green;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.box input{
+    padding: 10px;
+    border-radius: 15px;
+    border: 0.5px solid #000;
+    background-color: #eeeeee9e;
+    outline: none;
+}
+
+select {
+    padding: 10px;
+    border-radius: 15px;
+    border: 0.5px solid #000;
+    background-color: #eeeeee9e;
+    outline: none;
+}
