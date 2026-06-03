@@ -56,7 +56,7 @@
             <h1>All the Dojos</h1>
             {%for dojo in dojos%}
             <div class="dojo-content">
-                <p>{{dojo.name}}</p>
+                <p>{{dojo.name}} - {{dojo.ningas.count}}</p>
                 <form action="{%url 'dojo_delete' id=dojo.id%}" method="post">
                     {%csrf_token%}
                     <input class="btn-d" type="submit" value="delete">

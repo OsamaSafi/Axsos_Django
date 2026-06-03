@@ -5,7 +5,7 @@ from dojo_ningas_app import models
 # Create your views here.
 def index(request):
     context = {
-        'dojos': models.Dojo.objects.all().order_by('-created_at')
+        'dojos': models.Dojo.objects.all().order_by('-created_at'),
     }
     return render(request,'index.html',context)
 
