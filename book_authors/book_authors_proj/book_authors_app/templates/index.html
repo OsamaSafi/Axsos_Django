@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book and Authors</title>
+
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="book-form">
+            <form action="/book/create" method="post">
+                <a href="/authors" class="book-link">GO TO AUTHORS</a>
+                <h1>Add Book</h1>
+                {%csrf_token%}
+                <div class="box">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" required>
+                </div>
+                <div class="box">
+                    <label for="desc">Description</label>
+                    <textarea name="desc" id="desc" cols="25" rows="10"></textarea>
+                </div>
+                <input type="submit" value="Add">
+            </form>
+        </div>
+        <div class="book-table">
+            <h1></h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>title</th>
+                        <th>desc</th>
+                        <th>Author Count</th>
+                        <th>created_at</th>
+                        <th>ِAction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for book in books%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{book.title}}</td>
+                        <td>{{book.desc}}</td>
+                        <td>{{book.authors.count}}</td>
+                        <td>{{book.created_at}}</td>
+                        <td class="action">
+                            <a href="{%url 'book-show' id=book.id%}" class="btn-v">view</a>
+                            <form action="{% url 'delete-book' id=book.id %}" method="post">
+                                {%csrf_token%}
+                                <input class="btn-d" type="submit" value="delete">
+                            </form>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 60%;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container .book-form form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container .book-form form input {
+    padding: 8px;
+    background-color: #eee;
+    border: 0.5px solid #000;
+    border-radius: 10px;
+    outline: none;
+}
+.container .book-form form textarea{
+    padding: 8px;
+    background-color: #eee;
+    border: 0.5px solid #000;
+    border-radius: 10px;
+    outline: none;
+}
+
+.container .book-form form .box{
+    display: flex;
+    align-items: start;
+    gap: 50px;
+    justify-content: start;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+th {
+    background-color: #f3f4f6;
+    color: #1f2937;
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 2px solid #e5e7eb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+}
+
+
+td {
+    padding: 14px 16px;
+    color: #4b5563;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+
+tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+tr:hover {
+    background-color: #f0fdf4; 
+    transition: background-color 0.2s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.action {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-v{
+    padding: 5px;
+    background-color: green;
+    color: #fff;
+    border: 0.5px solid #000;
+    border-radius: 10px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.btn-d{
+    padding: 5px;
+    background-color: red;
+    color: #fff;
+    border: 0.5px solid #000;
+    border-radius: 10px;
+}
+
+.book-link{
+    display: inline;
+    padding: 5px 20px;
+    background-color: blueviolet;
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid blueviolet;
+    transition: 0.4s ease-in-out;
+}
+
+.book-link:hover{
+    background-color: transparent;
+    color: #000;
+}

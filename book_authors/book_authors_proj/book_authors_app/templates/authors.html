@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book and Authors</title>
+
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="book-form">
+            <form action="/author/create" method="post">
+                <a href="/" class="book-link">GO TO BOOKS</a>
+                <h1>Add Authors</h1>
+                {%csrf_token%}
+                <div class="box">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" required>
+                </div>
+                <div class="box">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" required>
+                </div>
+                <div class="box">
+                    <label for="notes">Notes</label>
+                    <textarea name="notes" id="notes" cols="25" rows="10"></textarea>
+                </div>
+                <input type="submit" value="Add">
+            </form>
+        </div>
+        <div class="book-table">
+            <h1></h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Notes</th>
+                        <th>Book Count</th>
+                        <th>created_at</th>
+                        <th>ِAction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for author in authors%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{author.first_name}}</td>
+                        <td>{{author.last_name}}</td>
+                        <td>{{author.notes}}</td>
+                        <td>{{author.books.count}}</td>
+                        <td>{{author.created_at}}</td>
+                        <td class="action">
+                            <a href="{% url 'author-show' id=author.id %}" class="btn-v">view</a>
+                            <form action="{% url 'delete-author' id=author.id %}" method="post">
+                                {%csrf_token%}
+                                <input class="btn-d" type="submit" value="delete">
+                            </form>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

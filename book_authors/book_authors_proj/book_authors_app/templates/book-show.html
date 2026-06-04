@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{book.title}}</title>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <a href="/" class="book-link">GO TO BOOKS</a>
+        <h1>{{book.title}}</h1>
+        <p><span style="font-weight: bold;">ID :</span> {{book.id}}</p>
+        <p><span style="font-weight: bold;">Description :</span> {{book.desc}}</p>
+        <h3>Authors</h3>
+        <ul>
+            {%for author in book.authors.all %}
+            <li>{{author.first_name}} {{author.last_name}}</li>
+            {%endfor%}
+        </ul>
+
+        <form action="{% url 'add-author' id=book.id %}" method="post">
+            {% csrf_token %}
+            <select name="author" id="author">
+                {% for author in authors %}
+                <option value="{{author.id}}">{{author.first_name}} {{author.last_name}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Add">
+        </form>
+    </div>
+</body>
+
+</html>
