@@ -50,6 +50,11 @@ def showPage(request,id):
 def showEdit(request,id):
     if request.method == "POST":
         show = models.Show.objects.update_show(request.POST,id)
+        errors = models.Show.objects.validate_show(request.POST,show)
+        if len(errors) > 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            return redirect('edit-page',id=id) 
         return redirect('show-page',id=show.id)
     else:
         return redirect('/')
