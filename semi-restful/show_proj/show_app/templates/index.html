@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shows</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="book-table">
+            <h1>Shows</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>title</th>
+                        <th>network</th>
+                        <th>desc</th>
+                        <th>release date</th>
+                        <th>created_at</th>
+                        <th>ِAction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for show in shows%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{show.title}}</td>
+                        <td>{{show.network}}</td>
+                        <td>{{show.desc}}</td>
+                        <td>{{show.release_date}}</td>
+                        <td>{{show.created_at}}</td>
+                        <td class="action">
+                            <a href="{%url 'show-page' id=show.id%}" class="btn v">View</a>
+                            <a href="{%url 'edit-page' id=show.id%}" class="btn e">Edit</a>
+                            <form action="{% url 'show-delete' id=show.id %}" method="post">
+                                {%csrf_token%}
+                                <input class="btn d" type="submit" value="Delete">
+                            </form>
+
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            <p class="creare-btn">
+                <a href="/show/create-page" class="btn-c">Create Show</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+
+</html>
