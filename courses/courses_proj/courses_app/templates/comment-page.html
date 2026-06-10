@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="comment-card">
+            <h1>Comment on the following course</h1>
+            <p>name : {{course.name}}</p>
+            <p>description : {{course.course_desc.content}}</p>
+            <div class="action">
+                <a href="/courses" style="background-color: gray; color: #fff;padding: 5px;">Go Back</a>
+                <form action="{% url 'comment' id=course.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-box">
+                        <label for="comment">Comment</label>
+                        <textarea name="comment" id="comment" cols="30" rows="7"></textarea>
+                    </div>
+                    <input type="submit" value="comment" style="background-color: green; color: #fff;padding: 5px;">
+                </form>
+            </div>
+
+            <div class="msgs">
+                {% for msg in messages %}
+                <p style="color: red;">{{msg}}</p>
+                {% endfor %}
+            </div>
+
+            <h1>All Comments <span style="color: red;">{{comments.count}}</span></h1>
+            <div class="comments">
+                {% for comment in comments %}
+                <div class="comment-box">
+                    <p>{{comment.comment}}</p>
+                    <form action="{% url 'comment-delete' id=comment.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="delete" style="background-color: red; color: #fff;padding: 5px;">
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

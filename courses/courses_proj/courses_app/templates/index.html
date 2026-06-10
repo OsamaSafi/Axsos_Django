@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-course">
+            <form action="/courses/create" method="post">
+                <h1>Add new a course</h1>
+                {% for msg in messages %}
+                <p style="color: red;">{{msg}}</p>
+                {% endfor %}
+                {% csrf_token %}
+                <div class="form-box">
+                    <label for="name">name</label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div class="form-box">
+                    <label for="desc">desc</label>
+                    <textarea name="desc" id="desc" rows="5"></textarea>
+                </div>
+                <input type="submit" value="Add">
+            </form>
+        </div>
+        <div class="table-course">
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>desc</th>
+                        <th>created_at</th>
+                        <th>ِAction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for course in courses%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{course.name}}</td>
+                        <td>{{course.course_desc.content}}</td>
+                        <td>{{course.created_at}}</td>
+                        <td class="action">
+                            <a href="{% url 'delete-page' id=course.id %}">remove</a>
+                            <a href="{% url 'comment-page' id=course.id %}">comment</a>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

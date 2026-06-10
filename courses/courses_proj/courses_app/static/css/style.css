@@ -1,0 +1,148 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+th {
+    background-color: #f3f4f6;
+    color: #1f2937;
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 2px solid #e5e7eb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+}
+
+
+td {
+    padding: 14px 16px;
+    color: #4b5563;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+
+tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+tr:hover {
+    background-color: #f0fdf4; 
+    transition: background-color 0.2s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.action {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.container{
+    width: 60%;
+    margin: 100px auto;
+}
+
+.form-course form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-course form input{
+    padding: 8px;
+    border: 0.5px solid #000;
+    border-radius: 8px;
+
+}
+.form-course form textarea{
+    padding: 8px;
+    border: 0.5px solid #000;
+    border-radius: 8px;
+}
+
+.form-course form .form-box{
+    display: flex;
+    gap: 10px;
+}
+
+.delete-card{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: start;
+    padding: 10px;
+}
+
+.comment-card{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: start;
+    padding: 10px;
+}
+.comment-card .form-box{
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+}
+.comment-card form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    gap: 10px;
+}
+
+.comment-card .action{
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-card textarea{
+    padding: 10px;
+    width: 100%;
+    outline: none;
+
+}
+
+.comments{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    gap: 20px;
+    width: 30%;
+}
+
+.comment-box{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}

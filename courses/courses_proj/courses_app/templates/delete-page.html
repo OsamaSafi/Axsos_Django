@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="delete-card">
+            <h1>Are you sure you want to delete the following course ?</h1>
+            <p>name : {{course.name}}</p>
+            <p>description : {{course.course_desc.content}}</p>
+            <div class="action">
+                <a href="/courses" style="background-color: gray; color: #fff;padding: 5px;">No</a>
+                <form action="{% url 'delete' id=course.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Delete" style="background-color: red; color: #fff;padding: 5px;">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
