@@ -21,13 +21,7 @@ def create_course(request):
             for key, val in errors.items():
                 messages.error(request, val)
             return redirect('/courses')
-        course = models.Course.objects.create(
-            name = request.POST['name']
-        )
-        desc = models.Description.objects.create(
-            content = request.POST['desc'],
-            course_id = course.id
-        )
+        models.Course.objects.createCourse(request.POST)
         return redirect('courses')
     else:
         return redirect('courses')
@@ -41,8 +35,7 @@ def deletePage(request,id):
     return render(request,'delete-page.html',context)
 
 def delete(request,id):
-    course = models.Course.objects.get(id=id)
-    course.delete()
+    models.Course.objects.deleteCourse(id)
     return redirect('/courses')
 
 
@@ -58,17 +51,16 @@ def commentPage(request,id):
 
 
 def comment(request,id):
-    course = models.Course.objects.get(id=id)
+    courses = models.Course.objects.filter(id=id)
     errors = models.Comment.objects.comment_validate(request.POST)
     if len(errors) > 0:
         for k,v in errors.items():
             messages.error(request,v)
-        return redirect('comment-page',id=course.id)
-    course.comments.create(comment = request.POST['comment'])
-    return redirect('comment-page',id=course.id)
+        return redirect('comment-page',id=courses[0].id)
+    comment = models.Comment.objects.createComment(request.POST,courses[0])
+    return redirect('comment-page',id=comment.course.id)
+
 
 def commentDelete(request,id):
-    comment = models.Comment.objects.get(id=id)
-    course_id = comment.course.id
-    comment.delete()
+    course_id = models.Comment.objects.deleteComment(id)
     return redirect('comment-page',id=course_id)

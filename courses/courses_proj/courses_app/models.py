@@ -13,6 +13,22 @@ class CourseManager(models.Manager):
             errors['description'] = 'Enter description and must grater than 15 char'
         
         return errors
+    
+    def createCourse(self,data):
+        course = Course.objects.create(
+            name = data.get('name','')
+        )
+        desc = Description.objects.create(
+            content = data.get('desc',''),
+            course_id = course.id
+        )
+        return course
+    
+    def deleteCourse(self,id):
+        course = Course.objects.get(id=id)
+        course.delete()
+        return
+
 
 
 class CommentManager(models.Manager):
@@ -22,6 +38,18 @@ class CommentManager(models.Manager):
         if len(comment) < 2:
             errors['comment'] = 'Enter comment and must grater than 2 char'
         return errors
+    
+    def createComment(self,data,course):
+        comment = course.comments.create(comment = data.get('comment',''))
+        return comment
+    
+    def deleteComment(self,id):
+        comment = Comment.objects.get(id=id)
+        course_id = comment.course.id
+        comment.delete()
+        return course_id
+
+
 
 
 class Course(models.Model):
