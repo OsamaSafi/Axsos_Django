@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+
+<body>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'general_error' in message.tags %}
+        <div style="color: red;">
+            {{ message }}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'delete_user' in message.tags %}
+        <div style="color: #fff;background-color: red;padding: 10px;text-align: center;font-weight: bold;">
+            {{ message }}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+        {% if messages %}
+        <div class="registration-errors" style="margin-bottom: 15px;">
+            {% for message in messages %}
+            {% if 'register_error' in message.tags or 'password_error' in message.tags %}
+            <div style="color: red; font-size: 14px; margin-bottom: 5px;">
+                • {{ message }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        <div class="user-forms">
+            <div class="register">
+                <h1>Registration</h1>
+                <form action="/register" method="post">
+                    {% csrf_token %}
+                    <div class="register-box">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name">
+                    </div>
+                    <div class="register-box">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" id="last_name">
+                    </div>
+                    <div class="register-box">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email">
+                    </div>
+                    <div class="register-box">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" name="birthday" id="birthday">
+                    </div>
+                    <div class="register-box">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password">
+                    </div>
+                    <div class="register-box">
+                        <label for="password_confirmation">Password Confirmation</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation">
+                    </div>
+                    <input type="submit" value="Register" class="btn">
+                </form>
+            </div>
+            <div class="login">
+                <h1>Login</h1>
+                {% if messages %}
+                {% for message in messages %}
+                {% if 'login_email_error' in message.tags %}
+                <span style="color: red; font-size: 13px; display: block;">{{ message }}</span>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                <form action="/login" method="post">
+                    {% csrf_token %}
+                    <div class="login-box">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email">
+                    </div>
+                    <div class="login-box">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password">
+                    </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if 'login_password_error' in message.tags %}
+                    <span style="color: red; font-size: 13px; display: block;">{{ message }}</span>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    <input type="submit" value="login" class="btn">
+                </form>
+            </div>
+        </div>
+
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>last Name</th>
+                        <th>Email</th>
+                        <th>Birthday</th>
+                        <th>Created At</th>
+                        <th>ِAction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for user in users%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.birthday}}</td>
+                        <td>{{user.created_at}}</td>
+                        <td class="action">
+                            <form action="{%url 'user_delete' id=user.id%}" method="post">
+                                {%csrf_token%}
+                                <input class="btn d" type="submit" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
