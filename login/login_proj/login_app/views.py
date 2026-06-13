@@ -20,7 +20,7 @@ def register(request):
         if request.POST['password'] != request.POST['password_confirmation']:
             messages.error(request, "both password doesnt correct!", extra_tags='password_error')
             return redirect('/home')
-        errors = models.User.objects.userValidate(request.POST)
+        errors = models.User.objects.registerValidate(request.POST)
         for k,v in errors.items():
             messages.error(request,v,extra_tags='register_error')
             return redirect('/home')
@@ -35,7 +35,7 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         user = models.User.objects.filter(email=email)
-        errors = models.User.objects.userValidate(request.POST)
+        errors = models.User.objects.loginValidate(request.POST)
         for k,v in errors.items():
             messages.error(request,v,extra_tags='register_error')
             return redirect('/home')

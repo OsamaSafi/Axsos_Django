@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+
+    <link rel="stylesheet" href="{% static 'wall_app/css/style.css' %}">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav-head">
+            <nav>
+                <h1>CodingDojo Wall</h1>
+                <div class="nav-content">
+                    <p>Welcom <span style="color: green;font-weight: bold;">{{user.first_name}}</span></p>
+                    <a href="/logout" class="btn">Logout</a>
+                </div>
+            </nav>
+        </div>
+
+        {% if messages %}
+        <div class="django-messages">
+            {% for message in messages %}
+            <div class="message-box {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if 'message_delete' in message.tags %}
+        <div class="message-box message_delete">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <div class="msg-form">
+            <form action="/wall/messages/create" method="post">
+                {% csrf_token %}
+                <div class="post-form">
+                    <label for="message">Post a message</label>
+                    <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                </div>
+                <input class="btn btn-p" type="submit" value="Post a message">
+            </form>
+        </div>
+
+        <div class="msg">
+            {% for msg in msgs %}
+            <div class="box">
+                <div>
+                    <div class="box-msg">
+                        <h3>{{msg.user.first_name}} {{msg.user.last_name}} - {{msg.created_at}}</h3>
+                        <a href="{% url 'message_delete' id=msg.id %}" style="color: red;">Delete</a>
+                    </div>
+                    <p>{{msg.message}}</p>
+                </div>
+            </div>
+            <div class="comment" style="padding-left: 20px;">
+                <div class="box-comment">
+                    <h3>all comment <span style="color: blue;">{{msg.comments.count}}</span></h3>
+                    {%for comment in msg.comments.all|dictsort:"created_at"%}
+                    <div style="margin-bottom: 20px;">
+                        <div class="box-comment">
+                            <h3>{{comment.user.first_name}} {{comment.user.last_name}} - {{comment.created_at}}</h3>
+                        </div>
+                        <p>{{comment.comment}}</p>
+                    </div>
+                    {%endfor%}
+                </div>
+                <form action="{% url 'comment_create' id=msg.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="comment-form">
+                        <label for="comment">Post a comment</label>
+                        <textarea name="comment" id="comment" cols="10" rows="4"></textarea>
+                    </div>
+                    <input class="btn btn-c" type="submit" value="Post a comment">
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

@@ -16,7 +16,7 @@ class UserManager(models.Manager):
         )
         return user
     
-    def userValidate(self, data):
+    def registerValidate(self, data):
         errors = {}
         first_name = data.get('first_name', '').strip()
         last_name = data.get('last_name', '').strip()
@@ -64,6 +64,21 @@ class UserManager(models.Manager):
 
         return errors
 
+    
+    def loginValidate(self, data):
+        errors = {}
+        email = data.get('email', '').strip()
+        password = data.get('password', '')
+        email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        if not email:
+            errors['email'] = "Email field is required."
+        elif not re.match(email_regex, email):
+            errors['email'] = "Invalid email format."
+
+        if len(password) < 8:
+            errors['password'] = "Password must be at least 8 characters long."
+        return errors
+
 
 
 
@@ -72,7 +87,7 @@ class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     birthday = models.DateField()
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
