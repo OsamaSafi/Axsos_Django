@@ -48,8 +48,7 @@ class UserManager(models.Manager):
             errors['email'] = "Invalid email format."
         return errors
     
-    def is_login(self, request):
-        return bool(request.session.get('user_id'))
+
 
 class BookManager(models.Manager):
     def book_validate(self,data):
