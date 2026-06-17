@@ -11,52 +11,72 @@ def index(request):
 
 def register(request):
     if request.method == 'POST':
-        if request.POST['password'] == request.POST['password_confirmation']:
-            pass_hash = bcrypt.hashpw(request.POST['password'].encode(),bcrypt.gensalt()).decode()
-            user = models.User.objects.create(
-                first_name = request.POST['first_name'],
-                last_name = request.POST['last_name'],
-                email = request.POST['email'],
-                password = pass_hash,
-            )
-            messages.success(request,'user register successfully',extra_tags='alert-danger')
+        errors = models.User.objects.reg_validate(request.POST)
+        if len(errors) > 0:
+            for k,v in errors.items():
+                messages.error(request,v,extra_tags='alert-danger')
             return redirect('/')
-        else:
-            messages.error(request,'password not match',extra_tags='alert-danger')
-            return redirect('/')
+        pass_hash = bcrypt.hashpw(request.POST['password'].encode(),bcrypt.gensalt()).decode()
+        user = models.User.objects.create(
+            first_name = request.POST['first_name'],
+            last_name = request.POST['last_name'],
+            email = request.POST['email'],
+            password = pass_hash,
+        )
+        messages.success(request,'user register successfully',extra_tags='alert-danger')
+        return redirect('/')
+
 
 
 def login(request):
     if request.method == 'POST':
+        errors = models.User.objects.login_validate(request.POST)
+        if len(errors) > 0:
+            for k,v in errors.items():
+                messages.error(request,v,extra_tags='alert-danger')
+            return redirect('/')
         user = models.User.objects.filter(email=request.POST['email']).first()
         if user and bcrypt.checkpw(request.POST['password'].encode(),user.password.encode()):
             request.session['user_id'] = user.id
             request.session['user_name'] = user.first_name
             messages.success(request,f'welcome {user.first_name}',extra_tags='alert-success')
             return redirect('/books')
-        else:
-            messages.error(request,'please enter correct psw and try again',extra_tags='alert-danger')
-            return redirect('/')
-        
+    else:
+        messages.error(request,'please enter correct psw and try again',extra_tags='alert-danger')
+        return redirect('/')
+
 
 def logout(request):
+    if models.User.objects.is_login(request):
         user_name = request.session.get('user_name').capitalize()
         request.session.flush()
         messages.error(request,f'Goodbye {user_name}',extra_tags='alert-danger')
         return redirect('/')
+    else:
+        messages.success(request,'Login first',extra_tags='alert-danger')
+        return redirect('/')
 
 
 def books(request):
-    user_id = request.session.get('user_id')
-    user = models.User.objects.filter(id=user_id).first()
-    return render(request,'books.html',{
-        'books':models.Book.objects.all(),
-        'user':user
-    })
+    if models.User.objects.is_login(request):
+        user_id = request.session.get('user_id')
+        user = models.User.objects.filter(id=user_id).first()
+        return render(request,'books.html',{
+            'books':models.Book.objects.all(),
+            'user':user
+        })
+    else:
+        messages.success(request,'Login first',extra_tags='alert-danger')
+        return redirect('/')
 
 
 def create_book(request):
     if request.method == 'POST':
+        errors = models.Book.objects.book_validate(request.POST)
+        if len(errors) > 0:
+            for k,v in errors.items():
+                messages.error(request,v,extra_tags='alert-danger')
+            return redirect('/books')
         user_id = request.session.get('user_id')
         user = models.User.objects.filter(id=user_id).first()
         if user_id:
@@ -78,23 +98,31 @@ def create_book(request):
 
 
 def book_show(request,id):
-    book = models.Book.objects.filter(id=id).first()
-    return render(request,'show-book.html',{
-        'book': book,
-        'user' : models.User.objects.filter(id=request.session.get('user_id')).first()
-    })
+    if models.User.objects.is_login(request):
+        book = models.Book.objects.filter(id=id).first()
+        return render(request,'show-book.html',{
+            'book': book,
+            'user' : models.User.objects.filter(id=request.session.get('user_id')).first()
+        })
+    else:
+        messages.success(request,'Login first',extra_tags='alert-danger')
+        return redirect('/')
 
 
 def book_edit(request,id):
     if request.method == 'POST':
-        book = models.Book.objects.filter(id=id).first()
-        user_id = request.session.get('user_id')
-        if book.upbloaded_by.id == user_id:
-            book.title = request.POST['title']
-            book.desc = request.POST['desc']
-            book.save()
-            messages.success(request,'book updated successfully',extra_tags='alert-success')
-            return redirect(f'/books/{book.id}')
+        if models.User.objects.is_login(request):
+            book = models.Book.objects.filter(id=id).first()
+            user_id = request.session.get('user_id')
+            if book.upbloaded_by.id == user_id:
+                book.title = request.POST['title']
+                book.desc = request.POST['desc']
+                book.save()
+                messages.success(request,'book updated successfully',extra_tags='alert-success')
+                return redirect(f'/books/{book.id}')
+        else:
+            messages.success(request,'Login first',extra_tags='alert-danger')
+            return redirect('/')
         
     else:
         messages.error(request,'something error try again',extra_tags='alert-danger')
@@ -103,12 +131,16 @@ def book_edit(request,id):
 
 def book_delete(request,id):
     if request.method == 'POST':
-        book = models.Book.objects.filter(id=id).first()
-        user_id = request.session.get('user_id')
-        if book.upbloaded_by.id == user_id:
-            book.delete()
-            messages.success(request,'book deleted successfully',extra_tags='alert-success')
-            return redirect('/books')
+        if models.User.objects.is_login(request):
+            book = models.Book.objects.filter(id=id).first()
+            user_id = request.session.get('user_id')
+            if book.upbloaded_by.id == user_id:
+                book.delete()
+                messages.success(request,'book deleted successfully',extra_tags='alert-success')
+                return redirect('/books')
+        else:
+            messages.success(request,'Login first',extra_tags='alert-danger')
+            return redirect('/')
     else:
         messages.error(request,'something error try again',extra_tags='alert-danger')
         return redirect('/')
@@ -116,12 +148,16 @@ def book_delete(request,id):
 
 def book_favorit(request,id):
     if request.method == 'POST':
-        book = models.Book.objects.filter(id=id).first()
-        user_id = request.session.get('user_id')
-        user = models.User.objects.filter(id=user_id).first()
-        book.users_who_likes.add(user)
-        messages.success(request,'add to favorit successfully',extra_tags='alert-success')
-        return redirect(f'/books/{book.id}')
+        if models.User.objects.is_login(request):
+            book = models.Book.objects.filter(id=id).first()
+            user_id = request.session.get('user_id')
+            user = models.User.objects.filter(id=user_id).first()
+            book.users_who_likes.add(user)
+            messages.success(request,'add to favorit successfully',extra_tags='alert-success')
+            return redirect(f'/books/{book.id}')
+        else:
+            messages.success(request,'Login first',extra_tags='alert-danger')
+            return redirect('/')
     else:
         messages.error(request,'something error try again',extra_tags='alert-danger')
         return redirect('/')
@@ -129,14 +165,16 @@ def book_favorit(request,id):
 
 def book_unfavorit(request,id):
     if request.method == 'POST':
-        book = models.Book.objects.filter(id=id).first()
-        user_id = request.session.get('user_id')
-        user = models.User.objects.filter(id=user_id).first()
-        if user.id == book.upbloaded_by.id:
+        if models.User.objects.is_login(request):
+            book = models.Book.objects.filter(id=id).first()
+            user_id = request.session.get('user_id')
+            user = models.User.objects.filter(id=user_id).first()
             book.users_who_likes.remove(user)
             messages.success(request,'remove from favorit successfully',extra_tags='alert-danger')
             return redirect(f'/books/{book.id}')
-        return redirect(f'/books/{book.id}')
+        else:
+            messages.success(request,'Login first',extra_tags='alert-danger')
+            return redirect('/')
     else:
         messages.error(request,'something error try again',extra_tags='alert-danger')
         return redirect('/')
