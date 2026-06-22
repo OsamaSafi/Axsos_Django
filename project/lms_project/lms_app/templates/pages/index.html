@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div aria-live="polite" aria-atomic="true"
+    style="position: fixed; top: 20px; right: 20px; z-index: 1050; min-width: 300px;">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div
+            class="toast-header {% if message.tags == 'success' %}bg-success text-white{% else %}bg-danger text-white{% endif %}">
+            <strong class="mr-auto">system</strong>
+            <small>Now</small>
+            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+
+<div style="direction: ltr;" class="wrapper">
+
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+
+
+        <!--الاحصائيات-->
+        <div class="content">
+            <div class="container-fluid">
+                {% for book in books %}
+                {% if book.price != None %}
+                {% if book.status == 'sold' %}
+                <p class="bookprice" style="display: none;">{{book.price}}</p>
+                {% endif %}
+                {% endif %}
+
+                {% if book.total_rental != None %}
+                {% if book.status == 'rental' %}
+                <p class="bookprice" style="display: none;">{{book.total_rental}}</p>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+
+                {% for book in books %}
+                {% if book.total_rental != None %}
+                {% if book.status == 'rental' %}
+                <p class="totalrental" style="display: none;">{{book.total_rental}}</p>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                <p class="rentalsalary" style="display: none;"></p>
+
+                {% for book in books %}
+                {% if book.price != None %}
+                {% if book.status == 'sold' %}
+                <p class="totalprice" style="display: none;">{{book.price}}</p>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                <p class="pricesalary" style="display: none;"></p>
+
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="card-title">Total number of books</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <p class="d-flex flex-column">
+                                        <span class="text-bold text-lg">{{allbooks}}</span>
+                                        <span>Total number of books</span>
+                                    </p>
+                                </div>
+                                <!-- /.d-flex -->
+
+                                <div class="position-relative mb-4">
+                                    <canvas id="visitors-chart" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col-md-6 -->
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="card-title">profits</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <p class="d-flex flex-column">
+                                        <span id="totalsalarys" class="text-bold text-lg">$</span><br>
+                                    </p>
+                                </div>
+                                <!-- /.d-flex -->
+
+                                <div class="position-relative mb-4">
+                                    <canvas id="sales-chart" height="160"></canvas>
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-end">
+                                    <span class="mr-2">
+                                        <i class="fas fa-square text-primary"></i> Profit from selling books
+                                        <p id="soldtotals"></p>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-square text-gray"></i> Profits from borrowing books
+                                        <p id="rentedtotals"></p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.col-md-6 -->
+                </div>
+                <!-- /.row -->
+
+                <!-- form add books -->
+                <div class="row m-1 mb-3">
+                    <a href="#bookform" class="btn btn-primary" data-toggle="collapse">+ Create Book</a>
+                </div>
+
+                <div id="bookform" class="card card-primary collapse {% if form.errors %}show{% endif %}">
+                    <div class="card-header">
+                        <h3 class="card-title">Create Book</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form method="POST" action="/books/create" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        <div class="card-body">
+                            {% for field in form %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            <small id='totalrente' class="form-text text-muted"></small>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!-- end form add books -->
+
+
+            <!-- تصنيفات-->
+
+            <div class="row justify-content-center mb-3">
+                <div class="col-4 ">
+                    <ul class="nav">
+                        {%for category in categories|slice:'4'%}
+                        <li class="nav-item cat{{category.id}}">
+                            <a id="" class="nav-link bg-primary" href="#">{{category.name}}</a>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+            <!-- books -->
+
+            <div class="row">
+                {%for book in books%}
+                <!-- الكتب -->
+                <div id="" class="col-md-4 bookhide book{{book.category.id}} book{{book.status}} mb-4">
+                    <div id="" class="card card-widget widget-user h-100 d-flex flex-column shadow-sm"
+                        style="border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+
+                        {% if book.book_img %}
+                        <div class="widget-user-header text-white"
+                            style="background: url({{book.book_img.url}}) center center; background-size: cover; min-height: 160px; position: relative;">
+                            {% else %}
+                            <div class="widget-user-header bg-info" style="min-height: 160px; position: relative;">
+                                {% endif %}
+
+                                <div class="position-absolute w-100 h-100"
+                                    style="background: rgba(0,0,0,0.15); top:0; left:0; z-index: 1;"></div>
+
+                                <div style="position: absolute; top: 10px; left: 10px; z-index: 3;" class="btn-group">
+                                    <button type="button"
+                                        class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split opacity-75"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{% url 'update' book.id %}"><i
+                                                class="fas fa-edit mr-2"></i>update</a>
+                                        <a class="dropdown-item text-danger" href="{% url 'delete_book' book.id %}"><i
+                                                class="fas fa-trash mr-2"></i>delete</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="widget-user-image" style="z-index: 2; top: 120px;">
+                                {% if book.author_img %}
+                                <img style="width: 90px; height: 90px; object-fit: cover;"
+                                    class="img-circle elevation-2" src="{{book.author_img.url}}" alt="User Avatar">
+                                {% endif %}
+                            </div>
+
+                            <div class="card-body pt-5 pb-2 text-center">
+                                <h4 class="font-weight-bold text-dark mb-1"
+                                    style="font-size: 1.3rem; margin-top: 15px;">{{book.title}}
+                                </h4>
+                                <p class="text-muted small mb-0">{{book.author}}</p>
+
+                                {% if book.description %}
+                                <p class="text-secondary small px-3 mt-2"
+                                    style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;">
+                                    {{ book.description }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="card-footer bg-white border-top-0 mt-auto pt-3 pb-4">
+                                <div class="row">
+                                    <div class="col-sm-4 border-right">
+                                        <div class="description-block">
+                                            <h5 class="description-header text-dark font-weight-bold"
+                                                style="font-size: 1.2rem;">
+                                                {{book.pages}}</h5>
+                                            <span class="description-text small text-muted"
+                                                style="text-transform: uppercase; font-size: 11px;">pages</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 border-right">
+                                        <div class="description-block">
+                                            {% if book.price %}
+                                            <h5 class="description-header text-dark font-weight-bold"
+                                                style="font-size: 1.2rem;">
+                                                ${{book.price}}</h5>
+                                            <span class="description-text small text-muted"
+                                                style="text-transform: uppercase; font-size: 11px;">price</span>
+                                            {% elif book.rental_price_day %}
+                                            <h5 class="description-header text-dark font-weight-bold"
+                                                style="font-size: 1.2rem;">
+                                                ${{book.rental_price_day}}</h5>
+                                            <span class="description-text small text-muted"
+                                                style="text-transform: uppercase; font-size: 11px;">per day</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="description-block">
+                                            <div class="status-container d-flex flex-column align-items-center">
+                                                {% if book.status == 'free' %}
+                                                <span class="badge badge-success text-white px-2 py-1 mb-1"
+                                                    style="font-size: 0.8rem; border-radius: 4px;">{{book.status}}</span>
+                                                {% elif book.status == 'rental' %}
+                                                <span class="badge badge-warning text-dark px-2 py-1 mb-1"
+                                                    style="font-size: 0.8rem; border-radius: 4px;">{{book.status}}</span>
+                                                {% else %}
+                                                <span class="badge badge-danger text-white px-2 py-1 mb-1"
+                                                    style="font-size: 0.8rem; border-radius: 4px;">{{book.status}}</span>
+                                                {% endif %}
+                                                <span class="description-text small text-muted"
+                                                    style="text-transform: uppercase; font-size: 11px;">status</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+
+        </div>
+        {% endblock %}

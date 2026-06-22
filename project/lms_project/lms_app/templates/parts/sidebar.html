@@ -1,0 +1,76 @@
+<aside style="position: fixed; height: 100vh;" class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="/" class="brand-link text-center">
+        <span class="brand-text font-weight-bold letter-spacing-1">BOOKLIFE</span>
+    </a>
+
+    <div class="sidebar d-flex flex-column justify-content-between" style="height: calc(100vh - 57px);">
+        <div>
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+                <div class="info w-100">
+                    <div class="d-flex justify-content-between align-items-center pr-2">
+                        {% if user.is_authenticated %}
+                        <span class="text-white font-weight-600"
+                            style="font-size: 0.95rem; max-width: 110px; overflow: hidden; white-space: nowrap;">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </span>
+                        <a href="{% url 'logout' %}" class="btn btn-xs btn-danger px-2 py-1"
+                            style="font-size: 0.75rem; border-radius: 4px;">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-xs btn-primary px-3 py-1" style="font-size: 0.8rem;">
+                            <i class="fas fa-sign-in-alt mr-1"></i> Sign In
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+
+                    <li class="nav-item">
+                        <a href="/books" class="nav-link">
+                            <i class="nav-icon fas fa-book-open text-info"></i>
+                            <p class="font-weight-light">Books</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/category/create" class="nav-link">
+                            <i class="nav-icon fas fa-tags text-success"></i>
+                            <p class="font-weight-light">Categories</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-header text-uppercase tracking-wider font-weight-bold style-header"
+                        style="font-size: 0.75rem; color: #a8afb7; padding: 1.2rem 1rem 0.5rem;">
+                        Book Status
+                    </li>
+
+                    <li style="cursor: pointer;" class="nav-item statussold">
+                        <a id="statusSold" class="nav-link">
+                            <i class="nav-icon fas fa-circle text-danger"></i>
+                            <p>Sold</p>
+                        </a>
+                    </li>
+
+                    <li style="cursor: pointer;" class="nav-item statusrental">
+                        <a class="nav-link">
+                            <i class="nav-icon fas fa-circle text-warning"></i>
+                            <p>Rental</p>
+                        </a>
+                    </li>
+
+                    <li style="cursor: pointer;" class="nav-item statusfree">
+                        <a class="nav-link">
+                            <i class="nav-icon fas fa-circle text-info"></i>
+                            <p>Free</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</aside>

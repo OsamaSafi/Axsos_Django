@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+
+{%block content%}
+<div style="direction: ltr;" class="wrapper">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Delete Book!</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <p class="p-3">Do you really want to delete the book?</p>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <form method="post" action="{%url 'delete_book' book.id%}">
+                        {%csrf_token%}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+
+                    <a href="/" class="btn btn-success">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}
